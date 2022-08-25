@@ -1,6 +1,0 @@
-Django==3.2.15
-git+https://github.com/birkin/shellvars-py.git
-mysqlclient==2.1.1
-pip-tools==6.8.0
-
-#PyMySQL==1.0.2
