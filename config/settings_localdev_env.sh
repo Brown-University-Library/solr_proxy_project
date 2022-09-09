@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-## LOCALDEV settings for django `x_project`
+## LOCALDEV settings for django `solr_pub_project`
 ##
 ## This file is loaded by `env/bin/activate` when running locally...
 ## ...and by `project/config/passenger_wsgi.py` on our servers.
@@ -34,7 +34,7 @@ export SOLR_PUB__DATABASES_JSON='
       "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "HOST": "",
-        "NAME": "../DB/x_project_files.sqlite3",
+        "NAME": "../DB/solr_pub_project_files.sqlite3",
         "PASSWORD": "",
         "PORT": "",
         "USER": ""
@@ -49,7 +49,7 @@ export SOLR_PUB__EMAIL_HOST="localhost"
 export SOLR_PUB__EMAIL_PORT="1026"  # will be converted to int in settings.py
 export SOLR_PUB__SERVER_EMAIL="donotreply_x-project@domain.edu"
 
-export SOLR_PUB__LOG_PATH="../logs/x_project.log"
+export SOLR_PUB__LOG_PATH="../logs/solr_pub_project.log"
 export SOLR_PUB__LOG_LEVEL="DEBUG"
 
 export SOLR_PUB__CSRF_TRUSTED_ORIGINS_JSON='["localhost", "127.0.0.1"]'
@@ -96,7 +96,7 @@ export SOLR_PUB__TEST_META_DCT_JSON='{
   "Shibboleth-isMemberOf": "aa:bb:cc;dd:ee:ff;the:group;gg:hh"
 }'
 
-export SOLR_PUB__LOGIN_PROBLEM_EMAIL="x_project_problems@domain.edu"
+export SOLR_PUB__LOGIN_PROBLEM_EMAIL="solr_pub_project_problems@domain.edu"
 
 
 ## end --------------------------------------------------------------
