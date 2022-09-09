@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['DJ_TMPLT32__SECRET_KEY']
+SECRET_KEY = os.environ['SOLR_PUB__SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = json.loads( os.environ['DJ_TMPLT32__DEBUG_JSON'] )
+DEBUG = json.loads( os.environ['SOLR_PUB__DEBUG_JSON'] )
 
-ALLOWED_HOSTS = json.loads( os.environ['DJ_TMPLT32__ALLOWED_HOSTS_JSON'] )  # list
+ALLOWED_HOSTS = json.loads( os.environ['SOLR_PUB__ALLOWED_HOSTS_JSON'] )  # list
 
 
 # Application definition
@@ -72,7 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-DATABASES = json.loads( os.environ['DJ_TMPLT32__DATABASES_JSON'] )
+DATABASES = json.loads( os.environ['SOLR_PUB__DATABASES_JSON'] )
 
 
 # Password validation
@@ -113,8 +113,8 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = os.environ['DJ_TMPLT32__STATIC_URL']
-STATIC_ROOT = os.environ['DJ_TMPLT32__STATIC_ROOT']
+STATIC_URL = os.environ['SOLR_PUB__STATIC_URL']
+STATIC_ROOT = os.environ['SOLR_PUB__STATIC_ROOT']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -140,7 +140,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.FileHandler',  # note: configure server to use system's log-rotate to avoid permissions issues
-            'filename': os.environ['DJ_TMPLT32__LOG_PATH'],
+            'filename': os.environ['SOLR_PUB__LOG_PATH'],
             'formatter': 'standard',
         },
         'console':{
@@ -157,7 +157,7 @@ LOGGING = {
         },
         'x_app': {
             'handlers': ['logfile'],
-            'level': os.environ['DJ_TMPLT32__LOG_LEVEL'],
+            'level': os.environ['SOLR_PUB__LOG_LEVEL'],
             'propagate': False
         },
         # 'django.db.backends': {  # re-enable to check sql-queries! <https://docs.djangoproject.com/en/1.11/topics/logging/#django-db-backends>
