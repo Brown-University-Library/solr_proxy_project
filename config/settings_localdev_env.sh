@@ -14,11 +14,11 @@
 ## standard project-level settings
 ## ============================================================================
 
-export SOLR_PUB__SECRET_KEY="example_secret_key"
+export SOLR_PROXY__SECRET_KEY="example_secret_key"
 
-export SOLR_PUB__DEBUG_JSON="true"
+export SOLR_PROXY__DEBUG_JSON="true"
 
-export SOLR_PUB__ADMINS_JSON='
+export SOLR_PROXY__ADMINS_JSON='
     [
       [
         "exampleFirst exampleLast",
@@ -27,9 +27,9 @@ export SOLR_PUB__ADMINS_JSON='
     ]
     '
 
-export SOLR_PUB__ALLOWED_HOSTS_JSON='["127.0.0.1", "127.0.0.1:8000", "0.0.0.0:8000", "localhost:8000"]'  # must be json
+export SOLR_PROXY__ALLOWED_HOSTS_JSON='["127.0.0.1", "127.0.0.1:8000", "0.0.0.0:8000", "localhost:8000"]'  # must be json
 
-export SOLR_PUB__DATABASES_JSON='
+export SOLR_PROXY__DATABASES_JSON='
     {
       "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -42,21 +42,21 @@ export SOLR_PUB__DATABASES_JSON='
     }
     '
 
-export SOLR_PUB__STATIC_URL="/static/"
-export SOLR_PUB__STATIC_ROOT="/static/"
+export SOLR_PROXY__STATIC_URL="/static/"
+export SOLR_PROXY__STATIC_ROOT="/static/"
 
-export SOLR_PUB__EMAIL_HOST="localhost"
-export SOLR_PUB__EMAIL_PORT="1026"  # will be converted to int in settings.py
-export SOLR_PUB__SERVER_EMAIL="donotreply_x-project@domain.edu"
+export SOLR_PROXY__EMAIL_HOST="localhost"
+export SOLR_PROXY__EMAIL_PORT="1026"  # will be converted to int in settings.py
+export SOLR_PROXY__SERVER_EMAIL="donotreply_x-project@domain.edu"
 
-export SOLR_PUB__LOG_PATH="../logs/solr_pub_project.log"
-export SOLR_PUB__LOG_LEVEL="DEBUG"
+export SOLR_PROXY__LOG_PATH="../logs/solr_pub_project.log"
+export SOLR_PROXY__LOG_LEVEL="DEBUG"
 
-export SOLR_PUB__CSRF_TRUSTED_ORIGINS_JSON='["localhost", "127.0.0.1"]'
+export SOLR_PROXY__CSRF_TRUSTED_ORIGINS_JSON='["localhost", "127.0.0.1"]'
 
 ## https://docs.djangoproject.com/en/1.11/topics/cache/
 ## - TIMEOUT is in seconds (0 means don't cache); CULL_FREQUENCY defaults to one-third
-export SOLR_PUB__CACHES_JSON='
+export SOLR_PROXY__CACHES_JSON='
 {
   "default": {
     "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
@@ -73,21 +73,21 @@ export SOLR_PUB__CACHES_JSON='
 ## app
 ## ============================================================================
 
-export SOLR_PUB__README_URL="https://github.com/birkin/django_template_32_project/blob/main/README.md"
+export SOLR_PROXY__README_URL="https://github.com/birkin/django_template_32_project/blob/main/README.md"
 
 ## auth -------------------------------------------------------------
 
-export SOLR_PUB__SUPER_USERS_JSON='[
+export SOLR_PROXY__SUPER_USERS_JSON='[
 ]'
 
-export SOLR_PUB__STAFF_USERS_JSON='
+export SOLR_PROXY__STAFF_USERS_JSON='
 [
   "eppn@domain.edu"
 ]'
 
-export SOLR_PUB__STAFF_GROUPER_GROUP="the:group"
+export SOLR_PROXY__STAFF_GROUPER_GROUP="the:group"
 
-export SOLR_PUB__TEST_META_DCT_JSON='{
+export SOLR_PROXY__TEST_META_DCT_JSON='{
   "Shibboleth-eppn": "eppn@brown.edu",
   "Shibboleth-brownNetId": "First_Last",
   "Shibboleth-mail": "first_last@domain.edu",
@@ -96,7 +96,7 @@ export SOLR_PUB__TEST_META_DCT_JSON='{
   "Shibboleth-isMemberOf": "aa:bb:cc;dd:ee:ff;the:group;gg:hh"
 }'
 
-export SOLR_PUB__LOGIN_PROBLEM_EMAIL="solr_pub_project_problems@domain.edu"
+export SOLR_PROXY__LOGIN_PROBLEM_EMAIL="solr_pub_project_problems@domain.edu"
 
 
 ## end --------------------------------------------------------------
