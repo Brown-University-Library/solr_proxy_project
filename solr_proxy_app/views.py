@@ -1,10 +1,10 @@
 import datetime, json, logging
 
 from django.conf import settings as project_settings
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from solr_proxy_app.lib import version_helper
+from solr_proxy_app.lib import validator, version_helper
 
 log = logging.getLogger(__name__)
 
@@ -12,6 +12,19 @@ log = logging.getLogger(__name__)
 # -------------------------------------------------------------------
 # main urls
 # -------------------------------------------------------------------
+
+
+def handler( request, core: str ):
+    log.debug( f'core, ``{core}``' )
+    if request.method != 'GET':
+        return HttpResponseBadRequest( '400 / Bad Request' )
+    ( err, validity ) = validator.check_core( core )
+    if err:
+        return HttpResponseNotFound( '404 / Not Found' )
+    # ( err, validity ) = validator.check_params( request.GET )
+    # if err:
+    #     return HttpResponseBadRequest( '404 / Not Found' )
+    return HttpResponse( f'``{core}`` handling coming' )
 
 
 def info(request):
