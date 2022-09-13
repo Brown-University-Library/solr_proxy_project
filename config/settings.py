@@ -74,7 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-DATABASES = json.loads( os.environ['SOLR_PROXY__DATABASES_JSON'] )
+# DATABASES = json.loads( os.environ['SOLR_PROXY__DATABASES_JSON'] )
 
 
 # Password validation
@@ -126,7 +126,7 @@ EMAIL_PORT = int( os.environ['SOLR_PROXY__EMAIL_PORT'] )
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 LOGGING = {
