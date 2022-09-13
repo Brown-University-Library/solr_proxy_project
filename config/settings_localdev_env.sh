@@ -29,18 +29,18 @@ export SOLR_PROXY__ADMINS_JSON='
 
 export SOLR_PROXY__ALLOWED_HOSTS_JSON='["127.0.0.1", "127.0.0.1:8000", "0.0.0.0:8000", "localhost:8000"]'  # must be json
 
-export SOLR_PROXY__DATABASES_JSON='
-    {
-      "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "HOST": "",
-        "NAME": "../DB/solr_pub_project_files.sqlite3",
-        "PASSWORD": "",
-        "PORT": "",
-        "USER": ""
-      }
-    }
-    '
+# export SOLR_PROXY__DATABASES_JSON='  # disabled; no DB in initial release
+#     {
+#       "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "HOST": "",
+#         "NAME": "../DB/solr_pub_project_files.sqlite3",
+#         "PASSWORD": "",
+#         "PORT": "",
+#         "USER": ""
+#       }
+#     }
+#     '
 
 export SOLR_PROXY__STATIC_URL="/static/"
 export SOLR_PROXY__STATIC_ROOT="/static/"
