@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-## LOCALDEV settings for django `solr_pub_project`
+## LOCALDEV settings for django `solr_proxy_project`
 ##
 ## This file is loaded by `env/bin/activate` when running locally...
 ## ...and by `project/config/passenger_wsgi.py` on our servers.
