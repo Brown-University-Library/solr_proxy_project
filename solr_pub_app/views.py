@@ -1,7 +1,7 @@
 import datetime, json, logging
 
 from django.conf import settings as project_settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from solr_pub_app.lib import version_helper
