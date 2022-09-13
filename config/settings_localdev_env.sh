@@ -34,7 +34,7 @@ export SOLR_PROXY__ALLOWED_HOSTS_JSON='["127.0.0.1", "127.0.0.1:8000", "0.0.0.0:
 #       "default": {
 #         "ENGINE": "django.db.backends.sqlite3",
 #         "HOST": "",
-#         "NAME": "../DB/solr_pub_project_files.sqlite3",
+#         "NAME": "../DB/solr_proxy_project_files.sqlite3",
 #         "PASSWORD": "",
 #         "PORT": "",
 #         "USER": ""
@@ -49,7 +49,7 @@ export SOLR_PROXY__EMAIL_HOST="localhost"
 export SOLR_PROXY__EMAIL_PORT="1026"  # will be converted to int in settings.py
 export SOLR_PROXY__SERVER_EMAIL="donotreply_x-project@domain.edu"
 
-export SOLR_PROXY__LOG_PATH="../logs/solr_pub_project.log"
+export SOLR_PROXY__LOG_PATH="../logs/solr_proxy_project.log"
 export SOLR_PROXY__LOG_LEVEL="DEBUG"
 
 export SOLR_PROXY__CSRF_TRUSTED_ORIGINS_JSON='["localhost", "127.0.0.1"]'
@@ -73,30 +73,30 @@ export SOLR_PROXY__CACHES_JSON='
 ## app
 ## ============================================================================
 
-export SOLR_PROXY__README_URL="https://github.com/birkin/django_template_32_project/blob/main/README.md"
+export SOLR_PROXY__README_URL="https://github.com/birkin/solr_proxy_project/blob/main/README.md"
 
 ## auth -------------------------------------------------------------
 
-export SOLR_PROXY__SUPER_USERS_JSON='[
-]'
+# export SOLR_PROXY__SUPER_USERS_JSON='[
+# ]'
 
-export SOLR_PROXY__STAFF_USERS_JSON='
-[
-  "eppn@domain.edu"
-]'
+# export SOLR_PROXY__STAFF_USERS_JSON='
+# [
+#   "eppn@domain.edu"
+# ]'
 
-export SOLR_PROXY__STAFF_GROUPER_GROUP="the:group"
+# export SOLR_PROXY__STAFF_GROUPER_GROUP="the:group"
 
-export SOLR_PROXY__TEST_META_DCT_JSON='{
-  "Shibboleth-eppn": "eppn@brown.edu",
-  "Shibboleth-brownNetId": "First_Last",
-  "Shibboleth-mail": "first_last@domain.edu",
-  "Shibboleth-givenName": "First",
-  "Shibboleth-sn": "Last",
-  "Shibboleth-isMemberOf": "aa:bb:cc;dd:ee:ff;the:group;gg:hh"
-}'
+# export SOLR_PROXY__TEST_META_DCT_JSON='{
+#   "Shibboleth-eppn": "eppn@brown.edu",
+#   "Shibboleth-brownNetId": "First_Last",
+#   "Shibboleth-mail": "first_last@domain.edu",
+#   "Shibboleth-givenName": "First",
+#   "Shibboleth-sn": "Last",
+#   "Shibboleth-isMemberOf": "aa:bb:cc;dd:ee:ff;the:group;gg:hh"
+# }'
 
-export SOLR_PROXY__LOGIN_PROBLEM_EMAIL="solr_pub_project_problems@domain.edu"
+# export SOLR_PROXY__LOGIN_PROBLEM_EMAIL="solr_proxy_project_problems@domain.edu"
 
 
 ## end --------------------------------------------------------------

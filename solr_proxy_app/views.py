@@ -4,7 +4,7 @@ from django.conf import settings as project_settings
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from solr_pub_app.lib import version_helper
+from solr_proxy_app.lib import version_helper
 
 log = logging.getLogger(__name__)
 

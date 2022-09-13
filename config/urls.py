@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from solr_pub_app import views
+from solr_proxy_app import views
 
 
 urlpatterns = [
