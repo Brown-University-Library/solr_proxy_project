@@ -5,6 +5,7 @@ from django.conf import settings as project_settings
 from django.test import SimpleTestCase as TestCase  # TestCase requires db
 from django.test.utils import override_settings
 from solr_proxy_app.lib import validator
+from solr_proxy_app import settings_app
 
 
 log = logging.getLogger(__name__)
@@ -14,7 +15,15 @@ TestCase.maxDiff = 1000
 class ValidateParamsTest( TestCase ):
     """ Checks param-validation. """
 
+    def test_validate_core_code( self ):
+        """ Checks validation of detected core. """
+        good_core: str = settings_app.LEGIT_CORES[0]
+        self.assertEqual( True, validator.check_core(good_core) )
+        self.assertEqual( False, validator.check_core('bad_core') )
+
+
     def test_params__good_query( self ):
+        """ Checks parsing of good url. """
         url = 'http://127.0.0.1:9999/solr/code/select?start=0&rows=6000&indent=on&fl=inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material&wt=json&group=true&group.field=city_pleiades&group.limit=-1&q=*:*&facet=on&facet.field=type'
         ##
         expected_main = 'http://127.0.0.1:9999/solr/code/select'
