@@ -73,11 +73,17 @@ export SOLR_PROXY__CACHES_JSON='
 ## app
 ## ============================================================================
 
-export SOLR_PROXY__LEGIT_CORES_JSON='
-[
-  "aa",
-  "bb"
-]
+export SOLR_PROXY__LEGIT_SOLR_PARAMS_JSON='
+{
+  "core_a": [
+    "aa",
+    "bb"
+  ],
+  "core_b": [
+    "cc",
+    "dd"
+  ]
+}
 '
 
 # export SOLR_PROXY__README_URL="https://github.com/birkin/solr_proxy_project/blob/main/README.md"

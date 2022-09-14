@@ -1,4 +1,4 @@
 import json, os
 
 
-LEGIT_CORES = json.loads( os.environ['SOLR_PROXY__LEGIT_CORES_JSON'] )
+LEGIT_PARAMS = json.loads( os.environ['SOLR_PROXY__LEGIT_SOLR_PARAMS_JSON'] )
