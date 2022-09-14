@@ -17,7 +17,7 @@ class ValidateParamsTest( TestCase ):
 
     def test_validate_core_code( self ):
         """ Checks validation of detected core. """
-        good_core: str = settings_app.LEGIT_CORES[0]
+        good_core: str = list( settings_app.LEGIT_PARAMS.keys() )[0]
         self.assertEqual( True, validator.check_core(good_core) )
         self.assertEqual( False, validator.check_core('bad_core') )
 
@@ -59,7 +59,7 @@ class ValidateParamsTest( TestCase ):
             'wt': 'json'
         }
         legit_params: dict = validator.get_legit_params( parts['param_string'] )
-        self.assertEqual( expected_legit_keys, list(legitlegit_params_keys_and_vals.keys()) )
+        self.assertEqual( expected_legit_keys, list(legit_params.keys()) )
         self.assertEqual( expected_legit_params, legit_params )
         ##
         expected_cleaned_solr_url = 'http://127.0.0.1:9999/solr/code/select?foo=bar&foo2=bar2'
@@ -78,7 +78,7 @@ class ValidateParamsTest( TestCase ):
         expected_legit_keys = []
         expected_legit_params = {}
         legit_params: dict = validator.get_legit_params( parts['param_string'] )
-        self.assertEqual( expected_legit_keys, list(legitlegit_params_keys_and_vals.keys()) )
+        self.assertEqual( expected_legit_keys, list(legit_params.keys()) )
         self.assertEqual( expected_legit_params, legit_params )
         ##
         expected_cleaned_solr_url = 'http://127.0.0.1:9999/solr/code/select'

@@ -12,7 +12,7 @@ def check_core( core: str ) -> bool:
     """ Checks the core-code. """
     log.debug( f'core, ``{core}``' )
     is_valid = False
-    if core in settings_app.LEGIT_CORES:
+    if core in settings_app.LEGIT_PARAMS.keys():
         is_valid = True
     log.debug( f'is_valid, ``{is_valid}``' )
     return is_valid
@@ -29,4 +29,12 @@ def get_parts( url: str ) -> dict[ str, str ]:
     return parts
 
 
-# def get_legit_params(  )
+def get_legit_params( param_string: str ) -> dict:
+    """ Takes given params, returns dict of legit paams. """
+    log.debug( f'')
+    return {'aa':'bb'}
+
+
+def create_cleaned_url( main_url: str, params: dict ) -> str:
+    """ Takes root-url and params and returns solr url. """
+    return 'foo'
