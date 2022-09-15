@@ -1,5 +1,6 @@
 import datetime, json, logging, pprint
 
+import requests
 from django.conf import settings as project_settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
@@ -26,6 +27,8 @@ def handler( request, core: str ):
     ok_params: dict = validator.get_legit_params( core, parts['param_string'] )
     cleaned_url: str = validator.create_cleaned_url( core, ok_params )
     ## access solr --------------------------------------------------
+    output = requests.get( cleaned_url )
+
     ## build response -----------------------------------------------
     return HttpResponse( f'``{core}`` handling coming' )
 
