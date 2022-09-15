@@ -32,39 +32,46 @@ class ValidateParamsTest( TestCase ):
         self.assertEqual( expected_main, parts['main'] )
         self.assertEqual( expected_param_string, parts['param_string'] )
         ##
-        expected_legit_keys = [
-            'facet.field',
+        expected_ok_keys = [
             'facet',
+            'facet.field',
             'fl',
+            'group',
             'group.field',
             'group.limit',
-            'group',
             'indent',
             'q',
             'rows',
             'start',
             'wt'
         ]
-        expected_legit_params = {
-            'facet.field': 'type',
+        expected_ok_params = {
             'facet': 'on',
+            'facet.field': 'type',
             'fl': 'inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material',
-            'group.field': 'city_pleiades',
-            'group.limit': '1',
             'group': 'true',
+            'group.field': 'city_pleiades',
+            'group.limit': '-1',
             'indent': 'on',
             'q': '*:*',
             'rows': '6000',
             'start': '0',
             'wt': 'json'
         }
-        legit_params: dict = validator.get_legit_params( parts['param_string'] )
-        self.assertEqual( expected_legit_keys, list(legit_params.keys()) )
-        self.assertEqual( expected_legit_params, legit_params )
+        legit_params: dict = validator.get_legit_params( 'iip', parts['param_string'] )
+        log.debug( f'legit_params, ``{legit_params}``' )
+        keys: list = list( legit_params.keys() )
+        log.debug( f'keys, ``{keys}``' )
+        sorted_keys = sorted( keys )
+        log.debug( f'sorted_keys, ``{sorted_keys}``' )
+        self.assertEqual( expected_ok_keys, sorted_keys )
+        self.assertEqual( expected_ok_params, legit_params )
         ##
-        expected_cleaned_solr_url = 'http://127.0.0.1:9999/solr/code/select?foo=bar&foo2=bar2'
-        cleaned_solr_url = validator.create_cleaned_url( expected_main, expected_legit_params  )
-        self.assertEqual( expected_cleaned_solr_url, cleaned_solr_url )
+        expected_cleaned_param_string = expected_param_string  # in this case the original param-string, since all fields are legit.
+        cleaned_solr_url: str = validator.create_cleaned_url( 'iip', expected_ok_params  )
+        parts: dict = validator.get_parts( cleaned_solr_url )
+        cleaned_param_string = parts['param_string']
+        self.assertEqual( expected_param_string, cleaned_param_string )
 
     def test_params__disallow_delete( self ):
         url = 'http://127.0.0.1:9999/solr/code/select?commit=true&stream.body=<delete><query>inscription_id%3A+squf0001</query></delete>'
@@ -75,14 +82,14 @@ class ValidateParamsTest( TestCase ):
         self.assertEqual( expected_main, parts['main'] )
         self.assertEqual( expected_param_string, parts['param_string'] )
         ##
-        expected_legit_keys = []
-        expected_legit_params = {}
-        legit_params: dict = validator.get_legit_params( parts['param_string'] )
-        self.assertEqual( expected_legit_keys, list(legit_params.keys()) )
-        self.assertEqual( expected_legit_params, legit_params )
+        expected_ok_keys = []
+        expected_ok_params = {}
+        legit_params: dict = validator.get_legit_params( 'iip', parts['param_string'] )
+        self.assertEqual( expected_ok_keys, list(legit_params.keys()) )
+        self.assertEqual( expected_ok_params, legit_params )
         ##
-        expected_cleaned_solr_url = 'http://127.0.0.1:9999/solr/code/select'
-        cleaned_solr_url = validator.create_cleaned_url( expected_main, expected_legit_params  )
+        expected_cleaned_solr_url = url  # the original url -- all is good
+        cleaned_solr_url = validator.create_cleaned_url( expected_main, expected_ok_params  )
         self.assertEqual( expected_cleaned_solr_url, cleaned_solr_url )
 
 
