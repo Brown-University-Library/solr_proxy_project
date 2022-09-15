@@ -1,4 +1,4 @@
-import datetime, json, logging
+import datetime, json, logging, pprint
 
 from django.conf import settings as project_settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseRedirect
@@ -15,15 +15,18 @@ log = logging.getLogger(__name__)
 
 
 def handler( request, core: str ):
-    log.debug( f'core, ``{core}``' )
+    log.debug( f'\n\nstarting handler; request, ``{pprint.pformat(request.__dict__)}``; core, ``{core}``' )
+    ## validate and clean params ------------------------------------
     if request.method != 'GET':
         return HttpResponseBadRequest( '400 / Bad Request' )
-    ( err, validity ) = validator.check_core( core )
-    if err:
+    core_is_valid: bool = validator.check_core( core )
+    if not core_is_valid:
         return HttpResponseNotFound( '404 / Not Found' )
-    # ( err, validity ) = validator.check_params( request.GET )
-    # if err:
-    #     return HttpResponseBadRequest( '404 / Not Found' )
+    parts: dict = validator.get_parts( request.GET )
+    ok_params: dict = validator.get_legit_params( core, parts['param_string'] )
+    cleaned_url: str = validator.create_cleaned_url( core, ok_params )
+    ## access solr --------------------------------------------------
+    ## build response -----------------------------------------------
     return HttpResponse( f'``{core}`` handling coming' )
 
 
