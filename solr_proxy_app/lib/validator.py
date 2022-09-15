@@ -44,7 +44,7 @@ def get_legit_params( code: str, param_string: str ) -> dict:
         part_key: str = key
         part_val: list = val
         if part_key in legit_keys:
-            ok_fields[part_key] = part_val[0]
+            ok_fields[part_key] = part_val
     log.debug( f'ok_fields, ``{pprint.pformat(ok_fields)}``' )
     return ok_fields
 
@@ -53,7 +53,7 @@ def create_cleaned_url( code: str, params: dict ) -> str:
     """ Takes root-url and params and returns solr url. """
     ## encode incoming params-dict
     log.debug( f'params, ``{pprint.pformat(params)}``' )
-    param_string: str = urlencode( params, doseq=True )
+    param_string: str = urlencode( params, doseq=True, safe=',*:' )
     log.debug( f'param_string, ``{param_string}``' )
     ## get real solr url
     solr_root: str = settings_app.LEGIT_PARAMS[code]['real_solr_root']
