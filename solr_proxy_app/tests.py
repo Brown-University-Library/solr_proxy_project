@@ -24,70 +24,11 @@ class ValidateParamsTest( TestCase ):
         self.assertEqual( True, validator.check_core(good_core) )
         self.assertEqual( False, validator.check_core('bad_core') )
 
-
-    # def test_params__good_query( self ):
-    #     """ Checks parsing of good url. """
-    #     url = 'http://127.0.0.1:9999/solr/code/select?start=0&rows=6000&indent=on&fl=inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material&wt=json&group=true&group.field=city_pleiades&group.limit=-1&q=*:*&facet=on&facet.field=type'
-    #     ##
-    #     expected_main = 'http://127.0.0.1:9999/solr/code/select'
-    #     expected_param_string = 'start=0&rows=6000&indent=on&fl=inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material&wt=json&group=true&group.field=city_pleiades&group.limit=-1&q=*:*&facet=on&facet.field=type'
-    #     parts: dict = validator.get_parts( url )
-    #     self.assertEqual( expected_main, parts['main'] )
-    #     self.assertEqual( expected_param_string, parts['param_string'] )
-    #     ##
-    #     expected_ok_keys = [
-    #         'facet',
-    #         'facet.field',
-    #         'fl',
-    #         'group',
-    #         'group.field',
-    #         'group.limit',
-    #         'indent',
-    #         'q',
-    #         'rows',
-    #         'start',
-    #         'wt'
-    #     ]
-    #     expected_ok_params = {
-    #         'start': ['0'], 
-    #         'rows': ['6000'], 
-    #         'indent': ['on'], 
-    #         'fl': ['inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material'], 
-    #         'wt': ['json'], 
-    #         'group': ['true'], 
-    #         'group.field': ['city_pleiades'], 
-    #         'group.limit': ['-1'], 
-    #         'q': ['*:*'], 
-    #         'facet': ['on'], 
-    #         'facet.field': ['type']
-    #     }
-    #     legit_params: dict = validator.get_legit_params( 'iip', parts['param_string'] )
-    #     log.debug( f'legit_params, ``{legit_params}``' )
-    #     keys: list = list( legit_params.keys() )
-    #     log.debug( f'keys, ``{keys}``' )
-    #     sorted_keys = sorted( keys )
-    #     log.debug( f'sorted_keys, ``{sorted_keys}``' )
-    #     self.assertEqual( expected_ok_keys, sorted_keys )
-    #     self.assertEqual( expected_ok_params, legit_params )
-    #     ##
-    #     expected_cleaned_param_string: str = expected_param_string  # in this case the original param-string, since all fields are legit.
-    #     log.debug( f'expected_cleaned_param_string, ``{expected_cleaned_param_string}``' )
-    #     cleaned_solr_url: str = validator.create_cleaned_url( 'iip', expected_ok_params  )
-    #     parts: dict = validator.get_parts( cleaned_solr_url )
-    #     cleaned_param_string = parts['param_string']
-    #     log.debug( f'cleaned_param_string, ``{cleaned_param_string}``' )
-    #     self.assertEqual( expected_cleaned_param_string, cleaned_param_string )
-
     def test_params__good_query( self ):
         """ Checks parsing of good url. """
         url = 'http://127.0.0.1:9999/solr/code/select?start=0&rows=6000&indent=on&fl=inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material&wt=json&group=true&group.field=city_pleiades&group.limit=-1&q=*:*&facet=on&facet.field=type'
-        ##
-        expected_main = 'http://127.0.0.1:9999/solr/code/select'
+        ## setup expectations ---------------------------------------
         expected_param_string = 'start=0&rows=6000&indent=on&fl=inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material&wt=json&group=true&group.field=city_pleiades&group.limit=-1&q=*:*&facet=on&facet.field=type'
-        # parts: dict = validator.get_parts( url )
-        # self.assertEqual( expected_main, parts['main'] )
-        # self.assertEqual( expected_param_string, parts['param_string'] )
-        ##
         expected_ok_keys = [
             'facet',
             'facet.field',
@@ -114,30 +55,26 @@ class ValidateParamsTest( TestCase ):
             'facet': ['on'], 
             'facet.field': ['type']
         }
-        
+        ## prepare querystring --------------------------------------
         parsed_parts: ParseResult = urlparse( url )
         param_string: str = parsed_parts.query
+        ## get legit_params -----------------------------------------
         legit_params: dict = validator.get_legit_params( 'iip', param_string )
-
         log.debug( f'legit_params, ``{legit_params}``' )
         keys: list = list( legit_params.keys() )
         log.debug( f'keys, ``{keys}``' )
         sorted_keys = sorted( keys )
         log.debug( f'sorted_keys, ``{sorted_keys}``' )
+        ## run tests on params --------------------------------------
         self.assertEqual( expected_ok_keys, sorted_keys )
         self.assertEqual( expected_ok_params, legit_params )
-        ##
+        ## pepare cleaned_solr_url ----------------------------------
         expected_cleaned_param_string: str = expected_param_string  # in this case the original param-string, since all fields are legit.
         log.debug( f'expected_cleaned_param_string, ``{expected_cleaned_param_string}``' )
         cleaned_solr_url: str = validator.create_cleaned_url( 'iip', expected_ok_params  )
-
-        # parts: dict = validator.get_parts( cleaned_solr_url )
-        # cleaned_param_string = parts['param_string']
-
+        ## test cleaned_solr_url params -----------------------------
         parsed_parts: ParseResult = urlparse( cleaned_solr_url )
         cleaned_param_string: str = parsed_parts.query
-
-
         log.debug( f'cleaned_param_string, ``{cleaned_param_string}``' )
         self.assertEqual( expected_cleaned_param_string, cleaned_param_string )
 
