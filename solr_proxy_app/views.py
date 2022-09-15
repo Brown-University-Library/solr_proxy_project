@@ -23,12 +23,15 @@ def handler( request, core: str ):
     core_is_valid: bool = validator.check_core( core )
     if not core_is_valid:
         return HttpResponseNotFound( '404 / Not Found' )
-    parts: dict = validator.get_parts( request.GET )
-    ok_params: dict = validator.get_legit_params( core, parts['param_string'] )
+    # parts: dict = validator.get_parts( request.GET )
+    querystring: str = request.META['QUERY_STRING']
+    log.debug( f'querystring, ``{querystring}``')
+    # ok_params: dict = validator.get_legit_params( core, parts['param_string'] )
+    ok_params: dict = validator.get_legit_params( core, querystring )
     cleaned_url: str = validator.create_cleaned_url( core, ok_params )
     ## access solr --------------------------------------------------
-    output = requests.get( cleaned_url )
-
+    resp = requests.get( cleaned_url )
+    log.debug( f'resp, ``{pprint.pformat(resp.__dict__)}``' )
     ## build response -----------------------------------------------
     return HttpResponse( f'``{core}`` handling coming' )
 

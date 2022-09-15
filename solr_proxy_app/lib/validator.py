@@ -18,15 +18,16 @@ def check_core( core: str ) -> bool:
     return is_valid
 
 
-def get_parts( url: str ) -> dict[ str, str ]:
-    """ Separates the root url and the param-string. """
-    parsed_parts: ParseResult = urlparse( url )
-    log.debug( f'parsed_parts, ``{pprint.pformat(parsed_parts)}``' )
-    main: str = '%s://%s%s' % ( parsed_parts.scheme, parsed_parts.netloc, parsed_parts.path )
-    param_string: str = f'{parsed_parts.query}'
-    parts = { 'main': main, 'param_string': param_string }
-    log.debug( f'parts, ``{pprint.pformat(parts)}``' )
-    return parts
+# def get_parts( url: str ) -> dict[ str, str ]:
+#     """ Separates the root url and the param-string. """
+#     log.debug( f'url, ``{url}``' )
+#     parsed_parts: ParseResult = urlparse( url )
+#     log.debug( f'parsed_parts, ``{pprint.pformat(parsed_parts)}``' )
+#     main: str = '%s://%s%s' % ( parsed_parts.scheme, parsed_parts.netloc, parsed_parts.path )
+#     param_string: str = f'{parsed_parts.query}'
+#     parts = { 'main': main, 'param_string': param_string }
+#     log.debug( f'parts, ``{pprint.pformat(parts)}``' )
+#     return parts
 
 
 def get_legit_params( code: str, param_string: str ) -> dict:
@@ -45,6 +46,8 @@ def get_legit_params( code: str, param_string: str ) -> dict:
         part_val: list = val
         if part_key in legit_keys:
             ok_fields[part_key] = part_val
+        else:
+            log.warning( f'key, ``{part_key}`` not valid; (value, ``{part_val}``)' )
     log.debug( f'ok_fields, ``{pprint.pformat(ok_fields)}``' )
     return ok_fields
 
