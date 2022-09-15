@@ -5,6 +5,7 @@ from django.conf import settings as project_settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from solr_proxy_app.lib import validator, version_helper
 
 log = logging.getLogger(__name__)
@@ -15,9 +16,15 @@ log = logging.getLogger(__name__)
 # -------------------------------------------------------------------
 
 
+@csrf_exempt
 def handler( request, core: str ):
     log.debug( f'\n\nstarting handler; request, ``{pprint.pformat(request.__dict__)}``; core, ``{core}``' )
     ## validate and clean params ------------------------------------
+    log.debug( f'method, ``{request.method}``' )
+    if request.method == 'POST':
+        log.debug( 'hereA' )
+        log.debug( f'post, ``{pprint.pformat(request.POST)}``' )
+        log.debug( 'hereB' )
     if request.method != 'GET':
         return HttpResponseBadRequest( '400 / Bad Request' )
     core_is_valid: bool = validator.check_core( core )
