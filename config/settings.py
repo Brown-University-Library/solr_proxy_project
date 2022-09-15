@@ -31,6 +31,7 @@ ADMINS = json.loads( os.environ['SOLR_PROXY__ADMINS_JSON'] )
 
 ALLOWED_HOSTS = json.loads( os.environ['SOLR_PROXY__ALLOWED_HOSTS_JSON'] )  # list
 
+APPEND_SLASH = False
 
 # Application definition
 

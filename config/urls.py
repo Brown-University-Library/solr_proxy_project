@@ -6,7 +6,7 @@ from solr_proxy_app import views
 urlpatterns = [
 
     ## main ---------------------------------------------------------
-    path( '<core>/select/', views.handler, name='core_url' ),
+    path( '<core>/select', views.handler, name='core_url' ),
     path( 'info/', views.info, name='info_url' ),
 
     ## other --------------------------------------------------------
