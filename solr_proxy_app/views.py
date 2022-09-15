@@ -23,17 +23,26 @@ def handler( request, core: str ):
     core_is_valid: bool = validator.check_core( core )
     if not core_is_valid:
         return HttpResponseNotFound( '404 / Not Found' )
-    # parts: dict = validator.get_parts( request.GET )
     querystring: str = request.META['QUERY_STRING']
     log.debug( f'querystring, ``{querystring}``')
-    # ok_params: dict = validator.get_legit_params( core, parts['param_string'] )
     ok_params: dict = validator.get_legit_params( core, querystring )
     cleaned_url: str = validator.create_cleaned_url( core, ok_params )
     ## access solr --------------------------------------------------
     resp = requests.get( cleaned_url )
     log.debug( f'resp, ``{pprint.pformat(resp.__dict__)}``' )
     ## build response -----------------------------------------------
-    return HttpResponse( f'``{core}`` handling coming' )
+    output = resp.content.decode( 'utf-8', 'replace' )
+    content_type = 'text/plain; charset=utf-8'
+    format_pref = request.GET.get( u'wt', None )
+    if format_pref:
+        if format_pref == 'json':
+            content_type = 'application/json; charset=utf-8'
+        elif format_pref == 'xml':
+            content_type = 'text/xml; charset=utf-8'
+        else:
+            content_type = 'text/plain; charset=utf-8'
+    # return HttpResponse( f'``{core}`` handling coming' )
+    return HttpResponse( output, content_type=content_type )
 
 
 def info(request):
