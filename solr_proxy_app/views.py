@@ -1,4 +1,5 @@
 import datetime, json, logging, pprint
+from urllib.parse import urlencode
 
 import requests
 from django.conf import settings as project_settings
@@ -7,6 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from solr_proxy_app.lib import validator, version_helper
+
 
 log = logging.getLogger(__name__)
 
@@ -19,18 +21,28 @@ log = logging.getLogger(__name__)
 @csrf_exempt
 def handler( request, core: str ):
     log.debug( f'\n\nstarting handler; request, ``{pprint.pformat(request.__dict__)}``; core, ``{core}``' )
-    ## validate and clean params ------------------------------------
+    ## validate and get params --------------------------------------
     log.debug( f'method, ``{request.method}``' )
+    querystring: str = ''
     if request.method == 'POST':
-        log.debug( 'hereA' )
-        log.debug( f'post, ``{pprint.pformat(request.POST)}``' )
-        log.debug( 'hereB' )
-    if request.method != 'GET':
+        if core == 'iip':
+            log.debug( 'hereA' )
+            log.debug( f'post, ``{pprint.pformat(request.POST)}``' )
+            log.debug( 'hereB' )
+            post_params: dict = request.POST
+            log.debug( f'type(post_params), ``{type(post_params)}``' )
+            querystring: str = urlencode( post_params, doseq=True, safe=',*:' )
+            log.debug( f'querystring, ``{querystring}``' )
+        else:
+            return HttpResponseBadRequest( '400 / Bad Request' )
+    elif request.method == 'GET':
+        querystring: str = request.META['QUERY_STRING']
+    else:
         return HttpResponseBadRequest( '400 / Bad Request' )
     core_is_valid: bool = validator.check_core( core )
     if not core_is_valid:
         return HttpResponseNotFound( '404 / Not Found' )
-    querystring: str = request.META['QUERY_STRING']
+    
     log.debug( f'querystring, ``{querystring}``')
     ok_params: dict = validator.get_legit_params( core, querystring )
     cleaned_url: str = validator.create_cleaned_url( core, ok_params )
