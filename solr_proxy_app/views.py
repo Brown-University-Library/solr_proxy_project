@@ -27,10 +27,11 @@ def handler( request, core: str ):
     if request.method == 'POST':
         if core == 'iip':
             log.debug( 'hereA' )
-            log.debug( f'post, ``{pprint.pformat(request.POST)}``' )
-            log.debug( 'hereB' )
-            post_params: dict = request.POST
+            # log.debug( f'post, ``{pprint.pformat(request.POST)}``' )
+            # log.debug( 'hereB' )
+            post_params = request.POST
             log.debug( f'type(post_params), ``{type(post_params)}``' )
+            log.debug( f'post_params, ``{post_params}``' )
             querystring: str = urlencode( post_params, doseq=True, safe=',*:' )
             log.debug( f'querystring, ``{querystring}``' )
         else:
@@ -62,6 +63,51 @@ def handler( request, core: str ):
             content_type = 'text/plain; charset=utf-8'
     # return HttpResponse( f'``{core}`` handling coming' )
     return HttpResponse( output, content_type=content_type )
+
+# @csrf_exempt
+# def handler( request, core: str ):
+#     log.debug( f'\n\nstarting handler; request, ``{pprint.pformat(request.__dict__)}``; core, ``{core}``' )
+#     ## validate and get params --------------------------------------
+#     log.debug( f'method, ``{request.method}``' )
+#     querystring: str = ''
+#     if request.method == 'POST':
+#         if core == 'iip':
+#             log.debug( 'hereA' )
+#             log.debug( f'post, ``{pprint.pformat(request.POST)}``' )
+#             log.debug( 'hereB' )
+#             post_params: dict = request.POST
+#             log.debug( f'type(post_params), ``{type(post_params)}``' )
+#             querystring: str = urlencode( post_params, doseq=True, safe=',*:' )
+#             log.debug( f'querystring, ``{querystring}``' )
+#         else:
+#             return HttpResponseBadRequest( '400 / Bad Request' )
+#     elif request.method == 'GET':
+#         querystring: str = request.META['QUERY_STRING']
+#     else:
+#         return HttpResponseBadRequest( '400 / Bad Request' )
+#     core_is_valid: bool = validator.check_core( core )
+#     if not core_is_valid:
+#         return HttpResponseNotFound( '404 / Not Found' )
+    
+#     log.debug( f'querystring, ``{querystring}``')
+#     ok_params: dict = validator.get_legit_params( core, querystring )
+#     cleaned_url: str = validator.create_cleaned_url( core, ok_params )
+#     ## access solr --------------------------------------------------
+#     resp = requests.get( cleaned_url )
+#     log.debug( f'resp, ``{pprint.pformat(resp.__dict__)}``' )
+#     ## build response -----------------------------------------------
+#     output = resp.content.decode( 'utf-8', 'replace' )
+#     content_type = 'text/plain; charset=utf-8'
+#     format_pref = request.GET.get( u'wt', None )
+#     if format_pref:
+#         if format_pref == 'json':
+#             content_type = 'application/json; charset=utf-8'
+#         elif format_pref == 'xml':
+#             content_type = 'text/xml; charset=utf-8'
+#         else:
+#             content_type = 'text/plain; charset=utf-8'
+#     # return HttpResponse( f'``{core}`` handling coming' )
+#     return HttpResponse( output, content_type=content_type )
 
 
 def info(request):
