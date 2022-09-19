@@ -32,7 +32,8 @@ def handler( request, core: str ):
             post_params = request.POST
             log.debug( f'type(post_params), ``{type(post_params)}``' )
             log.debug( f'post_params, ``{post_params}``' )
-            querystring: str = urlencode( post_params, doseq=True, safe=',*:' )
+            # querystring: str = urlencode( post_params, doseq=True, safe=',*:' )
+            querystring = validator.convert_post_params_to_querystring( 'iip', post_params )
             log.debug( f'querystring, ``{querystring}``' )
         else:
             return HttpResponseBadRequest( '400 / Bad Request' )
