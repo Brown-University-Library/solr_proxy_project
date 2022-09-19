@@ -2,6 +2,7 @@ import json, logging, pprint
 from urllib.parse import ParseResult  # for type-checking
 from urllib.parse import parse_qs, urlencode, urlparse 
 
+from django.http import QueryDict
 from solr_proxy_app import settings_app
 
 
@@ -18,18 +19,6 @@ def check_core( core: str ) -> bool:
     return is_valid
 
 
-# def get_parts( url: str ) -> dict[ str, str ]:
-#     """ Separates the root url and the param-string. """
-#     log.debug( f'url, ``{url}``' )
-#     parsed_parts: ParseResult = urlparse( url )
-#     log.debug( f'parsed_parts, ``{pprint.pformat(parsed_parts)}``' )
-#     main: str = '%s://%s%s' % ( parsed_parts.scheme, parsed_parts.netloc, parsed_parts.path )
-#     param_string: str = f'{parsed_parts.query}'
-#     parts = { 'main': main, 'param_string': param_string }
-#     log.debug( f'parts, ``{pprint.pformat(parts)}``' )
-#     return parts
-
-
 def get_legit_params( code: str, param_string: str ) -> dict:
     """ Takes given params, returns dict of legit params. """
     log.debug( f'code, ``{code}``; param_string, ``{param_string}``' )
@@ -37,7 +26,7 @@ def get_legit_params( code: str, param_string: str ) -> dict:
     legit_keys = settings_app.LEGIT_PARAMS[code]['allowed_fields']
     log.debug( f'legit_keys, ``{legit_keys}``' )
     ## get incoming params
-    parts: dict[str, list[str]] = parse_qs( param_string )
+    parts: dict[str, list[str]] = parse_qs( param_string )  # parse_qs will convert foo=a&foo=b into {'foo': ['a', 'b']}
     log.debug( f'parts, ``{pprint.pformat(parts)}``' )
     ok_fields: dict = {}
     for (key, val) in parts.items():
@@ -65,5 +54,24 @@ def create_cleaned_url( code: str, params: dict ) -> str:
     return cleaned_url
 
 
-#     Expression of type "dict[str, list[str]]" cannot be assigned to declared type "int"
-#   "dict[str, list[str]]" is incompatible with "int"
+def convert_post_params_to_querystring( code: str, qdict: QueryDict ) -> str:
+    """ Takes incoming parameters (from, for example, POST-params) and returns a valid querystring. """
+    log.debug( f'qdict, ``{qdict}``' )
+    ## get legit keys for given code --------------------------------
+    legit_keys = settings_app.LEGIT_PARAMS[code]['allowed_fields']
+    ## create a mutable QueryDict we can remove keys from -----------
+    qdict_stringified:str = qdict.urlencode()
+    log.debug( f'qdict_stringified, ``{qdict_stringified}``' )
+    new_qdict = QueryDict( qdict_stringified, mutable=True )
+    ## validate keys ------------------------------------------------
+    qdict_keys = qdict.keys()
+    log.debug( f'qdict_keys, ``{qdict_keys}``' )
+    for key in qdict_keys:
+        if key not in legit_keys:
+            new_qdict.pop(key)  # can't pop from the qdict we're iterating through
+    log.debug( f'updated-new_qdict, ``{new_qdict}``' )
+    ## convert to querystring ---------------------------------------
+    new_qdict_stringified: str = new_qdict.urlencode()
+    ok_string = new_qdict_stringified
+    log.debug( f'ok_string, ``{ok_string}``' )
+    return ok_string

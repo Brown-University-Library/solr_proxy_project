@@ -46,10 +46,16 @@ def handler( request, core: str ):
     
     log.debug( f'querystring, ``{querystring}``')
     ok_params: dict = validator.get_legit_params( core, querystring )
+
+    # if 'wt' not in ok_params:
+    #     ok_params['wt'] = 'json'
+    #     log.debug( f'updated ok_params, ``{pprint.pformat(ok_params)}``')
+
     cleaned_url: str = validator.create_cleaned_url( core, ok_params )
     ## access solr --------------------------------------------------
     resp = requests.get( cleaned_url )
     log.debug( f'resp, ``{pprint.pformat(resp.__dict__)}``' )
+
     ## build response -----------------------------------------------
     output = resp.content.decode( 'utf-8', 'replace' )
     content_type = 'text/plain; charset=utf-8'
@@ -61,8 +67,18 @@ def handler( request, core: str ):
             content_type = 'text/xml; charset=utf-8'
         else:
             content_type = 'text/plain; charset=utf-8'
-    # return HttpResponse( f'``{core}`` handling coming' )
+
+    # ## build response -----------------------------------------------
+    # output = resp.content.decode( 'utf-8', 'replace' )
+    # content_type = 'application/json; charset=utf-8'
+    # format_pref = request.GET.get( u'wt', None )
+    # if format_pref:
+    #     if format_pref == 'xml':
+    #         content_type = 'text/xml; charset=utf-8'
+    # log.debug( f'content_type, ``{content_type}``' )
+
     return HttpResponse( output, content_type=content_type )
+
 
 # @csrf_exempt
 # def handler( request, core: str ):
@@ -73,10 +89,11 @@ def handler( request, core: str ):
 #     if request.method == 'POST':
 #         if core == 'iip':
 #             log.debug( 'hereA' )
-#             log.debug( f'post, ``{pprint.pformat(request.POST)}``' )
-#             log.debug( 'hereB' )
-#             post_params: dict = request.POST
+#             # log.debug( f'post, ``{pprint.pformat(request.POST)}``' )
+#             # log.debug( 'hereB' )
+#             post_params = request.POST
 #             log.debug( f'type(post_params), ``{type(post_params)}``' )
+#             log.debug( f'post_params, ``{post_params}``' )
 #             querystring: str = urlencode( post_params, doseq=True, safe=',*:' )
 #             log.debug( f'querystring, ``{querystring}``' )
 #         else:
@@ -91,10 +108,16 @@ def handler( request, core: str ):
     
 #     log.debug( f'querystring, ``{querystring}``')
 #     ok_params: dict = validator.get_legit_params( core, querystring )
+
+#     # if 'wt' not in ok_params:
+#     #     ok_params['wt'] = 'json'
+#     #     log.debug( f'updated ok_params, ``{pprint.pformat(ok_params)}``')
+
 #     cleaned_url: str = validator.create_cleaned_url( core, ok_params )
 #     ## access solr --------------------------------------------------
 #     resp = requests.get( cleaned_url )
 #     log.debug( f'resp, ``{pprint.pformat(resp.__dict__)}``' )
+
 #     ## build response -----------------------------------------------
 #     output = resp.content.decode( 'utf-8', 'replace' )
 #     content_type = 'text/plain; charset=utf-8'
@@ -106,7 +129,16 @@ def handler( request, core: str ):
 #             content_type = 'text/xml; charset=utf-8'
 #         else:
 #             content_type = 'text/plain; charset=utf-8'
-#     # return HttpResponse( f'``{core}`` handling coming' )
+
+#     # ## build response -----------------------------------------------
+#     # output = resp.content.decode( 'utf-8', 'replace' )
+#     # content_type = 'application/json; charset=utf-8'
+#     # format_pref = request.GET.get( u'wt', None )
+#     # if format_pref:
+#     #     if format_pref == 'xml':
+#     #         content_type = 'text/xml; charset=utf-8'
+#     # log.debug( f'content_type, ``{content_type}``' )
+
 #     return HttpResponse( output, content_type=content_type )
 
 
