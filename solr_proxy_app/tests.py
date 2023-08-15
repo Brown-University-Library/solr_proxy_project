@@ -2,13 +2,13 @@ import json, logging
 from urllib.parse import ParseResult  # for type-checking
 from urllib.parse import urlparse 
 
-
-from django.conf import settings as project_settings
 # from django.test import TestCase
+from django.conf import settings as project_settings
+from django.http import QueryDict
 from django.test import SimpleTestCase as TestCase  # TestCase requires db
 from django.test.utils import override_settings
-from solr_proxy_app.lib import validator
 from solr_proxy_app import settings_app
+from solr_proxy_app.lib import validator
 
 
 log = logging.getLogger(__name__)
@@ -118,7 +118,6 @@ class ValidatorTest( TestCase ):
             )
 
     def test_convert_post_params_to_querystring__simple(self):
-        from django.http import QueryDict
         qdict = QueryDict('start=0&rows=6000&fl=inscription_id&foo=bar')
         self.assertEqual( 
             'start=0&rows=6000&fl=inscription_id', 
@@ -126,7 +125,6 @@ class ValidatorTest( TestCase ):
             )
 
     def test_convert_post_params_to_querystring__multiple(self):
-        from django.http import QueryDict
         qdict = QueryDict('facet.field=physical_type&facet.field=language&facet.field=religion&fl=inscription_id&foo=bar')
         self.assertEqual( 
             'facet.field=physical_type&facet.field=language&facet.field=religion&fl=inscription_id', 
@@ -134,13 +132,7 @@ class ValidatorTest( TestCase ):
             )
         
     def test_convert_post_params_to_querystring__allow_facetquery(self):
-        from django.http import QueryDict
-        # qdict = QueryDict('facet.field=physical_type&facet.field=language&facet.field=religion&fl=inscription_id&foo=bar')
-        
-        # {'start': ['0'], 'rows': ['0'], 'indent': ['on'], 'fl': ['inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material'], 'wt': ['json'], 'group': ['true'], 'group.field': ['city_pleiades'], 'group.limit': ['-1'], 'q': ['*:* AND display_status:approved'], 'fq': ['(physical_type:"amphora") '], 'facet': ['on'], 'facet.field': ['type', 'physical_type', 'language', 'religion', 'material', 'placeMenu']}
-        
         qdict = QueryDict( 'start=0&rows=0&indent=on&fl=inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material&wt=json&group=true&group.field=city_pleiades&group.limit=-1&q=*:* AND display_status:approved&fq=(physical_type:"amphora") &facet=on&facet.field=type&facet.field=physical_type&facet.field=language&facet.field=religion&facet.field=material&facet.field=placeMenu' )
-        
         self.assertEqual( 
             'start=0&rows=0&indent=on&fl=inscription_id%2Cregion%2Ccity%2Ccity_geo%2CnotBefore%2CnotAfter%2CplaceMenu%2Ctype%2Cphysical_type%2Clanguage%2Clanguage_display%2Creligion%2Cmaterial&wt=json&group=true&group.field=city_pleiades&group.limit=-1&q=%2A%3A%2A+AND+display_status%3Aapproved&fq=%28physical_type%3A%22amphora%22%29+&facet=on&facet.field=type&facet.field=physical_type&facet.field=language&facet.field=religion&facet.field=material&facet.field=placeMenu', 
             validator.convert_post_params_to_querystring( 'iip', qdict ) 
