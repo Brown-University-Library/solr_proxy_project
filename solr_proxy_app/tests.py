@@ -132,6 +132,19 @@ class ValidatorTest( TestCase ):
             'facet.field=physical_type&facet.field=language&facet.field=religion&fl=inscription_id', 
             validator.convert_post_params_to_querystring( 'iip', qdict ) 
             )
+        
+    def test_convert_post_params_to_querystring__allow_facetquery(self):
+        from django.http import QueryDict
+        # qdict = QueryDict('facet.field=physical_type&facet.field=language&facet.field=religion&fl=inscription_id&foo=bar')
+        
+        # {'start': ['0'], 'rows': ['0'], 'indent': ['on'], 'fl': ['inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material'], 'wt': ['json'], 'group': ['true'], 'group.field': ['city_pleiades'], 'group.limit': ['-1'], 'q': ['*:* AND display_status:approved'], 'fq': ['(physical_type:"amphora") '], 'facet': ['on'], 'facet.field': ['type', 'physical_type', 'language', 'religion', 'material', 'placeMenu']}
+        
+        qdict = QueryDict( 'start=0&rows=0&indent=on&fl=inscription_id,region,city,city_geo,notBefore,notAfter,placeMenu,type,physical_type,language,language_display,religion,material&wt=json&group=true&group.field=city_pleiades&group.limit=-1&q=*:* AND display_status:approved&fq=(physical_type:"amphora") &facet=on&facet.field=type&facet.field=physical_type&facet.field=language&facet.field=religion&facet.field=material&facet.field=placeMenu' )
+        
+        self.assertEqual( 
+            'start=0&rows=0&indent=on&fl=inscription_id%2Cregion%2Ccity%2Ccity_geo%2CnotBefore%2CnotAfter%2CplaceMenu%2Ctype%2Cphysical_type%2Clanguage%2Clanguage_display%2Creligion%2Cmaterial&wt=json&group=true&group.field=city_pleiades&group.limit=-1&q=%2A%3A%2A+AND+display_status%3Aapproved&fq=%28physical_type%3A%22amphora%22%29+&facet=on&facet.field=type&facet.field=physical_type&facet.field=language&facet.field=religion&facet.field=material&facet.field=placeMenu', 
+            validator.convert_post_params_to_querystring( 'iip', qdict ) 
+            )
 
     ## end class ValidateParamsTest()
 
